@@ -41,13 +41,9 @@ VM
 └── Persistent Storage
     └── PostgreSQL database files
 ```
-# Postmaster Process :
-The Postmaster/main PostgreSQL process is the main/parent process that coordinates the server, 
-while WAL writer, background writer, checkpointer, autovacuum launcher/workers, etc. are background processes. 
-And backend processes are different: they are server processes created for client connections and actually execute SQL queries.
 
-
-
+# From PostgreSQL Server Perspective/ Any DB Server:
+```
 PostgreSQL Server
 │
 ├── Main/Postmaster process
@@ -63,7 +59,61 @@ PostgreSQL Server
     ├── Checkpointer
     ├── Background writer
     └── Autovacuum launcher/workers
-	
+
+* There are 3 main sets of processes running on the VM, and se of codes called components are called the PostgreSQL Server.
+* These processes and components manage the data stored on the VM's Disk.
+* A combination of the Server process and compoments + Data on Disk is what we call PostgreSQL Database
+```
+
+# From Database Engine Perceptive :
+```
+PostgreSQL Database Engine
+│
+├── Code / Components
+│   ├── Query Parser
+│   ├── Query Planner / Optimizer
+│   ├── Query Executor
+│   ├── Transaction Management
+│   ├── Buffer Management
+│   ├── WAL Management
+│   └── Storage Management
+│
+└── Runtime Processes
+    ├── Postmaster / Main process
+    ├── Backend processes
+    └── Background processes
+
+* The Database Engine is basically the combination of the set of code and algorithms we call components and the process running on the OS of the VM, which runs that set of code when called is what we call the Database Engine.
+```
+
+
+# Runtime Process :
+```
+Runtime Processes
+│
+├── Main/Postmaster process
+│   └── Coordinates the server
+│
+├── Backend processes
+│   ├── Client connection 1 → executes SQL
+│   ├── Client connection 2 → executes SQL
+│   └── Client connection 3 → executes SQL
+│
+└── Background processes
+    ├── WAL writer
+    ├── Checkpointer
+    ├── Background writer
+    └── Autovacuum launcher/workers
+```
+* So, there are 3 primary runtime processes, where each category has a set of processes executing a variety of tasks on the OS of the VM.
+
+# Postmaster Process :
+The Postmaster/main PostgreSQL process is the main/parent process that coordinates the server, 
+while WAL writer, background writer, checkpointer, autovacuum launcher/workers, etc. are background processes. 
+And backend processes are different: they are server processes created for client connections and actually execute SQL queries.
+
+
+
 	
 
 “The Postmaster is the main coordinating process, or the brain of the PostgreSQL server. It manages server startup and shutdown, handles incoming client connections and authentication, creates backend processes to handle client sessions, and starts/manages background processes required for database maintenance and internal operations.”
