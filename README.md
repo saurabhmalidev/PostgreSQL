@@ -59,11 +59,10 @@ PostgreSQL Server
     ├── Checkpointer
     ├── Background writer
     └── Autovacuum launcher/workers
-
-* There are 3 main sets of processes running on the VM, and se of codes called components are called the PostgreSQL Server.
+```
+* There are 3 main sets of processes running on the VM, and these processes call the component code; And the combination of these processes and set of components is called the PostgreSQL Server.
 * These processes and components manage the data stored on the VM's Disk.
 * A combination of the Server process and compoments + Data on Disk is what we call PostgreSQL Database
-```
 
 # From Database Engine Perceptive :
 ```
