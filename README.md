@@ -13,14 +13,14 @@ They run on the machine/VM where PostgreSQL is installed.
 They use the VM's CPU and RAM, while persistent database data is stored on disk.
 So: PostgreSQL server = multiple processes working together, not a single process.
 
-What is PostgreSQL ?
+**Define PostgreSQL**
 
-```
-PostgreSQL is a relational database management system (RDBMS), i.e. the database software/engine. 
-The database is the logical collection of data managed by PostgreSQL. When self-hosted on a VM, PostgreSQL's database files are stored on the VM's persistent disk, while multiple PostgreSQL processes running on the VM manage that data. 
-So a cleaner statement is: “PostgreSQL is an RDBMS that runs multiple server processes on a VM to manage databases whose persistent data is stored on disk.”
-```
-# From VM percepctive :
+* PostgreSQL is a relational database management system (RDBMS), ie., the database software/engine. 
+* The database is the logical collection of data managed by PostgreSQL.
+* When self-hosted on a VM, PostgreSQL's database files are stored on the VM's persistent disk, while multiple PostgreSQL processes running on the VM manage that data. 
+* So a cleaner statement is: “PostgreSQL is an RDBMS that runs multiple server processes on a VM to manage databases whose persistent data is stored on disk.”
+
+# From VM perspective:
 ```
 VM
 │
@@ -118,15 +118,15 @@ And backend processes are different: they are server processes created for clien
 “The Postmaster is the main coordinating process, or the brain of the PostgreSQL server. It manages server startup and shutdown, handles incoming client connections and authentication, creates backend processes to handle client sessions, and starts/manages background processes required for database maintenance and internal operations.”
 
 
-Q. Where Does the PostgreSQL Database Engine Run?
-	
-	The database engine runs inside the PostgreSQL server processes on the machine where PostgreSQL is installed. In your VM example, the engine is therefore running on the VM, using its CPU and RAM, while the database files themselves are on the VM's persistent disk/storage.
-	
+**Q. Where Does the PostgreSQL Database Engine Run?**
+
+The database engine runs inside the PostgreSQL server processes on the machine where PostgreSQL is installed. In your VM example, the engine is therefore running on the VM, using its CPU and RAM, while the database files themselves are on the VM's persistent disk/storage.
 	More precisely, there isn't a separate executable called “database engine” sitting somewhere. PostgreSQL is the database engine. Its code runs through the PostgreSQL server/backend processes.
 	
 
-DATABASE ENGINE : 
 
+#VM 
+```
 	VM
 	│
 	├── PostgreSQL Database Engine
@@ -145,9 +145,34 @@ DATABASE ENGINE :
 	│
 	└── Persistent Storage
 		└── PostgreSQL database files
-		
+```	
+* The PostgreSQL database engine is the complete PostgreSQL software that contains the code and components responsible for managing and processing database operations. The processes are the runtime instances that execute that engine's code.
 
-The PostgreSQL database engine is the complete PostgreSQL software that contains the code and components responsible for managing and processing database operations. The processes are the runtime instances that execute that engine's code.
+* Management Components vs Runtime Processes
+Storage Management, Query Parser, Query Planner, Executor, Buffer Manager, WAL Manager, etc., are software components/modules inside PostgreSQL's codebase. The runtime processes are the actual OS processes that execute this code.
 
-Management Components vs Runtime Processes
-Storage Management, Query Parser, Query Planner, Executor, Buffer Manager, WAL Manager, etc. are software components/modules inside PostgreSQL's codebase. The runtime processes are the actual OS processes that execute this code.
+
+
+
+
+
+
+
+
+
+
+-----------------------------
+-
+**Replication in PostgreSQL:**
+
+* PostgreSQL replication can be broadly divided into physical replication and logical replication. The key difference is what is replicated: physical replication copies the database's storage-level changes, while logical replication copies logical row-level changes.
+
+* 1. Physical Replication: The primary server sends WAL (Write-Ahead Log) records to a standby server. The standby replays those WAL records, producing essentially the same physical database state as the primary. It is mainly used for high availability, failover, and read replicas. PostgreSQL's streaming replication is the common implementation. Physical replication replicates the entire database cluster, not selected tables.
+	Within physical replication, you'll commonly hear:
+		* Streaming replication — WAL is continuously streamed from primary to standby.
+ 		* Synchronous replication — primary waits for confirmation from a standby before considering a transaction committed.
+		* Asynchronous replication — primary does not wait for the standby; this is the normal/default approach.
+		* Cascading replication — a standby can forward WAL to another standby.
+
+
+
