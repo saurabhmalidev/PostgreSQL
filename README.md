@@ -167,12 +167,14 @@ Storage Management, Query Parser, Query Planner, Executor, Buffer Manager, WAL M
 
 * PostgreSQL replication can be broadly divided into physical replication and logical replication. The key difference is what is replicated: physical replication copies the database's storage-level changes, while logical replication copies logical row-level changes.
 
-* 1. Physical Replication: The primary server sends WAL (Write-Ahead Log) records to a standby server. The standby replays those WAL records, producing essentially the same physical database state as the primary. It is mainly used for high availability, failover, and read replicas. PostgreSQL's streaming replication is the common implementation. Physical replication replicates the entire database cluster, not selected tables.
-	Within physical replication, you'll commonly hear:
+* 1. Physical Replication: The primary server sends WAL (Write-Ahead Log) records to a standby server. The standby replays those WAL records, producing essentially the same physical database state as the primary. It is mainly used for high availability, failover, and read replicas. PostgreSQL's streaming replication is the common implementation. Physical replication replicates the entire database cluster, not selected tables. \
+Within physical replication, you'll commonly hear:
 		* Streaming replication — WAL is continuously streamed from primary to standby.
  		* Synchronous replication — primary waits for confirmation from a standby before considering a transaction committed.
 		* Asynchronous replication — primary does not wait for the standby; this is the normal/default approach.
 		* Cascading replication — a standby can forward WAL to another standby.
+
+* 2. Logical Replication: PostgreSQL decodes WAL changes into logical operations such as INSERT, UPDATE, and DELETE and sends them to subscribers. You can replicate specific tables rather than the entire database. This is useful for selective replication, data integration, migrations, and feeding another PostgreSQL database. PostgreSQL implements this using publications and subscriptions
 
 
 
