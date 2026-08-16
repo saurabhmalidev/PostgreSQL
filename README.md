@@ -176,5 +176,9 @@ Within physical replication, you'll commonly hear:
 
 * 2. Logical Replication: PostgreSQL decodes WAL changes into logical operations such as INSERT, UPDATE, and DELETE and sends them to subscribers. You can replicate specific tables rather than the entire database. This is useful for selective replication, data integration, migrations, and feeding another PostgreSQL database. PostgreSQL implements this using publications and subscriptions
 
+* Physical Replication Flow:
+* Logical Replication Flow
+  
+
 
 
